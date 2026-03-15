@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: bronze
+    database: PETROLEUM_AUDIT
+    schema: BRONZE
+
+    tables:
+      - name: general_ledger_transactions
+      - name: vendor_master
+      - name: customer_master
+      - name: product_master
+      - name: subsidiary_master
+      - name: chart_of_accounts

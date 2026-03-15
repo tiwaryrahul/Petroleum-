@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: bronze_well_production
+    description: Raw well production data passthrough
+    columns:
+      - name: well_id
+        description: Unique well identifier
+        tests:
+          - not_null
+      - name: production_date
+        tests:
+          - not_null
+      - name: oil_volume_bbl
+        tests:
+          - not_null
+      - name: status
+        tests:
+          - accepted_values:
+              values: ['ACTIVE', 'SHUT_IN', 'ABANDONED', 'SUSPENDED']
+
+  - name: bronze_pipeline_operations
+    description: Raw pipeline sensor and operational data
+    columns:
+      - name: pipeline_id
+        tests:
+          - not_null
+      - name: segment_id
+        tests:
+          - not_null
+      - name: reading_timestamp
+        tests:
+          - not_null
+      - name: status
+        tests:
+          - accepted_values:
+              values: ['OPERATIONAL', 'MAINTENANCE', 'SHUTDOWN', 'ALARM']

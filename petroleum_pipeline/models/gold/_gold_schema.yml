@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: gold_daily_production_summary
+    description: Daily aggregated production metrics
+    columns:
+      - name: production_date
+        tests:
+          - unique
+          - not_null
+      - name: active_wells
+        tests:
+          - not_null
+      - name: total_oil_bbl
+        tests:
+          - not_null
+
+  - name: gold_pipeline_health
+    description: Pipeline-level health and severity summary
+    columns:
+      - name: pipeline_id
+        tests:
+          - unique
+          - not_null
+      - name: pipeline_name
+        tests:
+          - not_null

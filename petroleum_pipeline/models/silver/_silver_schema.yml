@@ -1,0 +1,45 @@
+version: 2
+
+models:
+  - name: silver_well_production
+    description: Cleansed well production with calculated metrics
+    columns:
+      - name: well_id
+        tests:
+          - not_null
+      - name: production_date
+        tests:
+          - not_null
+      - name: water_cut_pct
+        description: Water cut percentage
+        tests:
+          - not_null
+      - name: total_liquid_bbl
+        tests:
+          - not_null
+
+  - name: gl_transactions_enriched
+    description: Enriched GL transactions joined with all master data
+    columns:
+      - name: journal_entry_id
+        tests:
+          - not_null
+      - name: account_number
+        tests:
+          - relationships:
+              to: source('bronze','chart_of_accounts')
+              field: account_number
+
+  - name: silver_pipeline_operations
+    description: Cleansed pipeline data with pressure drop analysis
+    columns:
+      - name: pipeline_id
+        tests:
+          - not_null
+      - name: pressure_drop_psi
+        tests:
+          - not_null
+      - name: pressure_drop_severity
+        tests:
+          - accepted_values:
+              values: ['NORMAL', 'MEDIUM', 'HIGH']

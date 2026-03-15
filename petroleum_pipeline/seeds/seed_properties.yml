@@ -1,0 +1,7 @@
+version: 2
+
+seeds:
+  - name: seed_well_production
+    description: Sample well production data for development and testing
+  - name: seed_pipeline_operations
+    description: Sample pipeline operations data for development and testing
