@@ -1,0 +1,13 @@
+petroleum_pipeline:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: KKTZVDG-MO79591
+      user: RAHULTIWARY10
+      password: "{{ env_var('SNOWFLAKE_PASSWORD') }}"
+      role: ACCOUNTADMIN
+      warehouse: COMPUTE_WH
+      database: PETROLEUM_DB
+      schema: public
+      threads: 4
