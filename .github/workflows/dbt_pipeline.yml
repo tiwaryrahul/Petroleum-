@@ -19,7 +19,10 @@ on:
 
 env:
   SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
-  DBT_PROJECT_DIR: petroleum_pipeline
+
+defaults:
+  run:
+    working-directory: petroleum_pipeline
 
 jobs:
   dbt-seed:
@@ -35,12 +38,13 @@ jobs:
 
       - name: Install dbt
         run: pip install dbt-snowflake==1.11.3
+        working-directory: .
 
       - name: dbt deps
-        run: cd $DBT_PROJECT_DIR && dbt deps --profiles-dir .
+        run: dbt deps --profiles-dir .
 
       - name: dbt seed
-        run: cd $DBT_PROJECT_DIR && dbt seed --profiles-dir .
+        run: dbt seed --profiles-dir .
 
   dbt-bronze:
     name: Bronze Layer
@@ -56,13 +60,13 @@ jobs:
 
       - name: Install dbt
         run: pip install dbt-snowflake==1.11.3
+        working-directory: .
 
       - name: dbt snapshot
-        run: cd $DBT_PROJECT_DIR && dbt snapshot --profiles-dir .
+        run: dbt snapshot --profiles-dir .
 
       - name: dbt run bronze
         run: |
-          cd $DBT_PROJECT_DIR
           if [ "${{ github.event.inputs.full_refresh }}" = "true" ]; then
             dbt run --select models/bronze --full-refresh --profiles-dir .
           else
@@ -70,7 +74,7 @@ jobs:
           fi
 
       - name: dbt test bronze
-        run: cd $DBT_PROJECT_DIR && dbt test --select models/bronze --profiles-dir .
+        run: dbt test --select models/bronze --profiles-dir .
 
   dbt-silver:
     name: Silver Layer
@@ -86,12 +90,13 @@ jobs:
 
       - name: Install dbt
         run: pip install dbt-snowflake==1.11.3
+        working-directory: .
 
       - name: dbt run silver
-        run: cd $DBT_PROJECT_DIR && dbt run --select models/silver --profiles-dir .
+        run: dbt run --select models/silver --profiles-dir .
 
       - name: dbt test silver
-        run: cd $DBT_PROJECT_DIR && dbt test --select models/silver --profiles-dir .
+        run: dbt test --select models/silver --profiles-dir .
 
   dbt-gold:
     name: Gold Layer
@@ -107,12 +112,13 @@ jobs:
 
       - name: Install dbt
         run: pip install dbt-snowflake==1.11.3
+        working-directory: .
 
       - name: dbt run gold
-        run: cd $DBT_PROJECT_DIR && dbt run --select models/gold --profiles-dir .
+        run: dbt run --select models/gold --profiles-dir .
 
       - name: dbt test gold
-        run: cd $DBT_PROJECT_DIR && dbt test --select models/gold --profiles-dir .
+        run: dbt test --select models/gold --profiles-dir .
 
       - name: dbt docs generate
-        run: cd $DBT_PROJECT_DIR && dbt docs generate --profiles-dir .
+        run: dbt docs generate --profiles-dir .
